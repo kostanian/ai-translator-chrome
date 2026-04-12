@@ -1,9 +1,13 @@
+> **Language / Язык:**&ensp; [![English](https://img.shields.io/badge/English-blue?style=for-the-badge)](#english) &ensp; [![Русский](https://img.shields.io/badge/Русский-red?style=for-the-badge)](#русский)
+
+---
+
+<a id="english"></a>
+
 # AI Translator — Chrome Extension
 
 **Translate any selected text on any webpage using AI.**
 Pick your provider, bring your own API key, and get instant translations powered by OpenAI, Claude, Grok, or Gemini.
-
----
 
 ## Features
 
@@ -14,7 +18,7 @@ Pick your provider, bring your own API key, and get instant translations powered
 - **Per-provider API keys** — save a separate key for each provider, switch freely
 - **Instant mode** — translate immediately on text selection (no button click needed)
 - **Dictionary** — save words with the `+` button, export as CSV or Excel
-- **Dictionary panel** — resizable side panel with search, opened via button or `Alt+Shift+S`
+- **Dictionary panel** — resizable side panel, opened via button or `Alt+Shift+S`
 - **4 interface languages** — Russian, English, Spanish, Chinese
 - **17 translation languages** — Arabic, Chinese, Czech, Dutch, English, French, German, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish, Ukrainian
 - **6 color themes** — Indigo, Blue, Teal, Rose, Amber, Slate
@@ -79,12 +83,14 @@ MIT
 
 ---
 
+<a id="русский"></a>
+
 # AI Translator — Расширение для Chrome
+
+> [![English](https://img.shields.io/badge/English-blue?style=flat-square)](#english) &ensp; [![Русский](https://img.shields.io/badge/Русский-red?style=flat-square)](#русский)
 
 **Переводите любой выделенный текст на любой веб-странице с помощью ИИ.**
 Выберите провайдера, введите свой API-ключ и получайте мгновенные переводы от OpenAI, Claude, Grok или Gemini.
-
----
 
 ## Возможности
 
