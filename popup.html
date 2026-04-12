@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Translator</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+<!-- ── Header ──────────────────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-left">
+    <label class="toggle-wrap">
+      <input type="checkbox" id="toggle-enabled" />
+      <span class="toggle-track"><span class="toggle-thumb"></span></span>
+    </label>
+    <span class="hotkey-hint" id="hotkey-hint"></span>
+  </div>
+  <div class="lang-flags" id="ui-lang-flags">
+    <button class="flag-btn active" data-lang="ru" title="Русский">🇷🇺</button>
+    <button class="flag-btn"        data-lang="en" title="English">🇬🇧</button>
+    <button class="flag-btn"        data-lang="es" title="Español">🇪🇸</button>
+    <button class="flag-btn"        data-lang="zh" title="中文">🇨🇳</button>
+  </div>
+</header>
+
+<!-- ── Target language (dropdown) ──────────────────────────────────────── -->
+<section class="section">
+  <label class="field-label" for="lang-select" id="lbl-target-lang">Translation language</label>
+  <div class="select-wrap">
+    <select id="lang-select" class="lang-select"></select>
+    <span class="select-chevron">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5H7z" fill="currentColor"/></svg>
+    </span>
+  </div>
+</section>
+
+<!-- ── Options ──────────────────────────────────────────────────────────── -->
+<section class="section">
+  <label class="check-row">
+    <input type="checkbox" id="chk-instant" class="check-input" />
+    <span class="check-box"></span>
+    <span class="check-label" id="lbl-instant">Instant translation on selection</span>
+    <span class="info-tip">i
+      <span class="info-tip-bubble" id="instant-tip-bubble"></span>
+    </span>
+  </label>
+  <label class="check-row">
+    <input type="checkbox" id="chk-dictionary" class="check-input" />
+    <span class="check-box"></span>
+    <span class="check-label" id="lbl-dictionary">Use dictionary</span>
+    <span class="dict-controls" id="dict-controls">
+      <button class="btn-dict-open" id="btn-dict-open">Open</button>
+      <span class="hotkey-hint dict-hotkey" id="dict-hotkey-hint"></span>
+    </span>
+  </label>
+</section>
+
+<!-- ── Color theme ──────────────────────────────────────────────────────────── -->
+<section class="section">
+  <p class="field-label" id="lbl-color-theme">Color theme</p>
+  <div class="color-swatches" id="color-swatches"></div>
+</section>
+
+<!-- ── API key ───────────────────────────────────────────────────────── -->
+<section class="section">
+  <p class="field-label" id="lbl-api-source">API key</p>
+
+  <!-- Custom key form -->
+  <div class="custom-key-wrap visible" id="custom-key-wrap">
+
+    <!-- Provider tabs -->
+    <div class="provider-tabs" id="provider-tabs">
+      <button class="tab-btn active" data-provider="openai">OpenAI</button>
+      <button class="tab-btn"        data-provider="anthropic">Claude</button>
+      <button class="tab-btn"        data-provider="grok">Grok</button>
+      <button class="tab-btn"        data-provider="gemini">Gemini</button>
+    </div>
+
+    <!-- Model selector -->
+    <div class="model-selector" id="model-selector"></div>
+
+    <!-- Key input -->
+    <div class="key-row">
+      <input type="password" id="api-key-input" class="key-input" placeholder="sk-…" autocomplete="off" />
+      <button class="btn-icon" id="btn-toggle-key" title="Show / Hide">
+        <svg id="eye-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8a3 3 0 100 6 3 3 0 000-6z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Active key badge -->
+    <div class="key-active" id="key-active" style="display:none">
+      <span class="key-active-icon">✓</span>
+      <span id="lbl-key-active">Key saved</span>
+      <span class="key-masked" id="key-masked"></span>
+    </div>
+
+    <!-- Validate status — NO inline style, controlled by CSS class only -->
+    <p class="validate-status" id="validate-status"></p>
+
+    <!-- Actions -->
+    <div class="key-actions">
+      <button class="btn-primary" id="btn-save-key">Save</button>
+      <button class="btn-outline" id="btn-validate-key">Validate</button>
+      <button class="btn-ghost"   id="btn-delete-key" style="display:none">Delete</button>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── Help & Guide ──────────────────────────────────────────────────────── -->
+<details class="help-section" id="help-section">
+  <summary class="help-summary">
+    <span class="help-summary-inner">
+      <span id="lbl-help-title">Help &amp; Guide</span>
+      <svg class="help-chevron" viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5H7z" fill="currentColor"/></svg>
+    </span>
+  </summary>
+  <div class="help-body" id="help-body"></div>
+</details>
+
+<script src="popup.js"></script>
+</body>
+</html>
