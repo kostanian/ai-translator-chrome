@@ -10,7 +10,7 @@
 Pick your provider, bring your own API key, and get instant translations powered by OpenAI, Claude, Grok, or Gemini.
 
 <p align="center">
-  <img src="screenshot.png" alt="AI Translator screenshot" width="700">
+  <img src="screenshot.png" alt="AI Translator screenshot" width="520">
 </p>
 
 ## Features
