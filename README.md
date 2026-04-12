@@ -9,6 +9,10 @@
 **Translate any selected text on any webpage using AI.**
 Pick your provider, bring your own API key, and get instant translations powered by OpenAI, Claude, Grok, or Gemini.
 
+<p align="center">
+  <img src="screenshot.png" alt="AI Translator screenshot" width="700">
+</p>
+
 ## Features
 
 - **Select & Translate** — highlight text on any page and get an AI-powered translation in a popup
@@ -91,6 +95,10 @@ MIT
 
 **Переводите любой выделенный текст на любой веб-странице с помощью ИИ.**
 Выберите провайдера, введите свой API-ключ и получайте мгновенные переводы от OpenAI, Claude, Grok или Gemini.
+
+<p align="center">
+  <img src="screenshot.png" alt="AI Translator — скриншот" width="700">
+</p>
 
 ## Возможности
 
