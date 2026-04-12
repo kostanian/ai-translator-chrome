@@ -97,7 +97,7 @@ MIT
 Выберите провайдера, введите свой API-ключ и получайте мгновенные переводы от OpenAI, Claude, Grok или Gemini.
 
 <p align="center">
-  <img src="screenshot.png" alt="AI Translator — скриншот" width="700">
+  <img src="screenshot.png" alt="AI Translator — скриншот" width="350">
 </p>
 
 ## Возможности
