@@ -126,8 +126,7 @@ const PROVIDER_MODELS = {
     { id: 'claude-sonnet-4-6',         label: 'Sonnet', hint: 'powerful' },
   ],
   grok: [
-    { id: 'grok-3',       label: 'Grok 3',       hint: 'fast' },
-    { id: 'grok-3-fast',  label: 'Grok 3 Fast',  hint: 'fastest' },
+    { id: 'grok-3', label: 'Grok 3', hint: 'fast' },
   ],
   gemini: [
     { id: 'gemini-2.0-flash', label: 'Flash 2.0',  hint: 'fast' },

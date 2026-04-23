@@ -79,7 +79,7 @@ Pick your provider, bring your own API key, and get instant translations + in-co
 |---|---|
 | OpenAI | GPT-4o mini (fast), GPT-4o (powerful) |
 | Anthropic | Haiku (fast), Sonnet (powerful) |
-| xAI | Grok 3 (fast), Grok 3 Fast (fastest) |
+| xAI | Grok 3 (fast) |
 | Google | Gemini 2.0 Flash (fast), Gemini 2.5 Flash (powerful) |
 
 ## Project Structure
@@ -187,7 +187,7 @@ MIT
 |---|---|
 | OpenAI | GPT-4o mini (быстрая), GPT-4o (мощная) |
 | Anthropic | Haiku (быстрая), Sonnet (мощная) |
-| xAI | Grok 3 (быстрая), Grok 3 Fast (самая быстрая) |
+| xAI | Grok 3 (быстрая) |
 | Google | Gemini 2.0 Flash (быстрая), Gemini 2.5 Flash (мощная) |
 
 ## Структура проекта
