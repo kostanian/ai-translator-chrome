@@ -44,6 +44,9 @@ Pick your provider, bring your own API key, and get instant translations + in-co
 **4. Read the structured breakdown** — base form, what form it is (with a pattern example), the collocation it appears in, the meaning here, and a clear reason behind the form choice.
 <p align="center"><img src="icons/select_4.png" alt="Step 4 — contextual explanation" width="560"></p>
 
+> 💡 The explanation is always written in your **interface language**. Switch it any time by clicking the corresponding flag in the top-right of the extension popup — this also updates all labels, tooltips and the explanation output.
+<p align="center"><img src="icons/select_5.png" alt="Interface language flags in the popup" width="420"></p>
+
 ## Installation
 
 1. Download or clone this repository
@@ -148,6 +151,9 @@ MIT
 
 **4. Читайте структурированный разбор** — начальная форма, что за форма (с примером паттерна), словосочетание, в котором стоит слово, значение здесь и понятное объяснение, почему выбрана именно эта форма.
 <p align="center"><img src="icons/select_4.png" alt="Шаг 4 — объяснение в контексте" width="560"></p>
+
+> 💡 Объяснение всегда выдаётся на **языке интерфейса**. Переключить его можно в любой момент — кликните по нужному флагу в правом верхнем углу попапа расширения. Вместе с объяснением поменяются все подписи и тултипы.
+<p align="center"><img src="icons/select_5.png" alt="Флаги языков интерфейса в попапе" width="420"></p>
 
 ## Установка
 
