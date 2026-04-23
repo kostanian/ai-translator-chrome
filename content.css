@@ -179,6 +179,63 @@
 .ai-tr-add-btn.added { color: #10b981; }
 .ai-tr-add-btn svg   { width: 15px; height: 15px; display: block; }
 
+/* ── Explain in context button (lamp icon) ──────────────────────────────── */
+.ai-tr-explain-btn {
+  all: initial;
+  font-family: inherit;
+  flex-shrink: 0;
+  cursor: pointer;
+  color: var(--ai-tr-muted2, #a78bfa);
+  padding: 3px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.12s, background 0.12s;
+  margin-top: 1px;
+}
+.ai-tr-explain-btn:hover  { color: #f59e0b; background: rgba(245,158,11,0.12); }
+.ai-tr-explain-btn.active { color: #f59e0b; background: rgba(245,158,11,0.18); }
+.ai-tr-explain-btn svg    { width: 15px; height: 15px; display: block; }
+
+/* ── Explanation block ──────────────────────────────────────────────────── */
+.ai-tr-explanation {
+  all: initial;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  display: none;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ai-tr-a, #6366f1) 6%, #fff);
+  border-left: 3px solid var(--ai-tr-a, #6366f1);
+  color: var(--ai-tr-text, #1e1b4b);
+  font-size: 13px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.ai-tr-explanation.visible { display: block; }
+.ai-tr-explanation strong {
+  font-weight: 700;
+  color: var(--ai-tr-dark, #4f46e5);
+}
+.ai-tr-explanation em {
+  font-style: italic;
+  color: color-mix(in srgb, var(--ai-tr-b, #8b5cf6) 80%, #000);
+  background: color-mix(in srgb, var(--ai-tr-b, #8b5cf6) 8%, transparent);
+  padding: 0 3px;
+  border-radius: 3px;
+  font-family: inherit;
+}
+.ai-tr-explain-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ai-tr-muted2, #a78bfa);
+  font-size: 12px;
+}
+.ai-tr-explain-loading .ai-tr-spinner { width: 14px; height: 14px; }
+
 /* ── Dictionary sidebar ──────────────────────────────────────────────────── */
 #ai-tr-dict {
   all: initial;

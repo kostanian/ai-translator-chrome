@@ -97,6 +97,10 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     sendResponse({ ok: true });
     return true;
   }
+  if (message.type === 'explain') {
+    handleExplain(message.word, message.sentence, message.interfaceLanguage).then(sendResponse);
+    return true;
+  }
   // Sent by content.js keydown (works with any keyboard layout via e.code)
   if (message.type === 'toggleEnabled') {
     _lastToggleMs = Date.now();
@@ -216,6 +220,135 @@ async function handleTranslate(text, targetLanguage) {
 function buildSystemPrompt(targetLanguage) {
   const langName = LANGUAGE_NAMES[targetLanguage] || targetLanguage;
   return `Translate the following text to ${langName}. Return ONLY the translation, no explanations, no quotes.`;
+}
+
+const EXPLAIN_LABELS = {
+  ru: { base: '📚 Начальная форма', form: '🔤 Что за форма', phrase: '🔗 Словосочетание', meaning: '💬 Перевод здесь', example: '💡 На пальцах' },
+  en: { base: '📚 Base form',        form: '🔤 What form',    phrase: '🔗 Phrase',         meaning: '💬 Means here',    example: '💡 In plain words' },
+  es: { base: '📚 Forma base',       form: '🔤 Qué forma',    phrase: '🔗 Frase',          meaning: '💬 Aquí significa', example: '💡 En palabras simples' },
+  zh: { base: '📚 原形',              form: '🔤 什么形式',      phrase: '🔗 短语',            meaning: '💬 此处意思',       example: '💡 通俗解释' },
+};
+
+function buildExplainPrompt(word, sentence, interfaceLanguage) {
+  const langName = LANGUAGE_NAMES[interfaceLanguage] || 'English';
+  const L = EXPLAIN_LABELS[interfaceLanguage] || EXPLAIN_LABELS.en;
+  return `You are a friendly language tutor. Explain the word "${word}" from the sentence: "${sentence}" — like a real teacher talking to a beginner.
+
+Respond ENTIRELY in ${langName}. Use EXACTLY this 5-line format (each line starts with the given label, on its own line):
+
+${L.base}: **<dictionary form>** — <short basic meaning>
+${L.form}: **<form name>** — <short plain-language description + ONE tiny ${langName} example of same form from another word, showing the pattern>
+${L.phrase}: *"<2–5 word phrase from the sentence containing the target word, in original language>"* — <${langName} translation of that phrase>
+${L.meaning}: **<${langName} translation of the word here>** — <what it means specifically inside that phrase above>
+${L.example}: <short explanation WHY this exact form is used in this sentence. Tie it directly to the phrase from line 3. Contrast with another form in one short clause. Use *italic* for contrasted alternatives.>
+
+Formatting rules (IMPORTANT):
+- Use **double asterisks** for key terms (dictionary form, form name, translation).
+- Use *single asterisks* for foreign-language quotes and contrasted alternatives.
+- The emoji labels are REQUIRED — copy them verbatim at the start of each line.
+- Line breaks between lines are REQUIRED (one line per item).
+
+Content rules:
+- Everything in ${langName}. Foreign words keep their form, followed by ${langName} translation with a dash.
+- Talk like a human, not a textbook. Vivid, concrete, short.
+- In line 3 (Phrase): pick the most natural collocation that contains the target word (e.g. for "sabía" in the sentence, pick "se sabía poco" or "Como se sabía").
+- The explanation in line 5 must explicitly reference the phrase from line 3.
+- Each line ≤30 words. No introductions, no conclusions, no extra lines.`;
+}
+
+// ── Explain dispatcher ───────────────────────────────────────────────────────
+async function handleExplain(word, sentence, interfaceLanguage) {
+  const settings = await loadSettings();
+  const apiKey = getActiveApiKey();
+  if (!apiKey) {
+    return { error: 'no_key', message: 'API key not set' };
+  }
+  const provider = settings.apiProvider;
+  const model    = (settings.selectedModels || {})[provider] || DEFAULT_MODELS[provider];
+  const cacheKey = `explain:${provider}:${model}:${interfaceLanguage}:${word}:${sentence}`;
+
+  const cached = _cacheGet(cacheKey);
+  if (cached) return { ...cached, fromCache: true };
+
+  const result = await withInflight(cacheKey, async () =>
+    explainWithAPI(word, sentence, interfaceLanguage, provider, apiKey, model)
+  );
+
+  if (result.success) _cacheSet(cacheKey, result);
+  return result;
+}
+
+async function explainWithAPI(word, sentence, interfaceLanguage, provider, apiKey, model) {
+  const prompt = buildExplainPrompt(word, sentence, interfaceLanguage);
+  try {
+    let explanation;
+    if (provider === 'openai') {
+      const res = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        body: JSON.stringify({
+          model: model || 'gpt-4o-mini',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.3,
+          max_tokens: 300
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || `OpenAI ${res.status}`);
+      explanation = data.choices[0].message.content.trim();
+
+    } else if (provider === 'anthropic') {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: model || 'claude-haiku-4-5-20251001',
+          max_tokens: 300,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || `Anthropic ${res.status}`);
+      explanation = data.content[0].text.trim();
+
+    } else if (provider === 'grok') {
+      const res = await fetch('https://api.x.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+        body: JSON.stringify({
+          model: model || 'grok-3',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.3,
+          max_tokens: 300
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || `Grok ${res.status}`);
+      explanation = data.choices[0].message.content.trim();
+
+    } else if (provider === 'gemini') {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model || 'gemini-2.0-flash'}:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || `Gemini ${res.status}`);
+      explanation = data.candidates[0].content.parts[0].text.trim();
+
+    } else {
+      throw new Error('Unknown provider: ' + provider);
+    }
+
+    return { success: true, explanation };
+  } catch (e) {
+    return { error: 'api_error', message: e.message };
+  }
 }
 
 // ── Custom AI providers ──────────────────────────────────────────────────────

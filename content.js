@@ -47,6 +47,9 @@
       close: 'Закрыть',
       translationFailed: 'Ошибка перевода',
       limitReached: 'Достигнут дневной лимит',
+      explain: 'Объяснить в контексте',
+      explaining: 'Анализируем…',
+      explainFailed: 'Не удалось получить объяснение',
     },
     en: {
       title: 'Dictionary',
@@ -60,6 +63,9 @@
       close: 'Close',
       translationFailed: 'Translation failed',
       limitReached: 'Daily limit reached',
+      explain: 'Explain in context',
+      explaining: 'Analyzing…',
+      explainFailed: 'Failed to get explanation',
     },
     es: {
       title: 'Diccionario',
@@ -73,6 +79,9 @@
       close: 'Cerrar',
       translationFailed: 'Error de traducción',
       limitReached: 'Límite diario alcanzado',
+      explain: 'Explicar en contexto',
+      explaining: 'Analizando…',
+      explainFailed: 'No se pudo obtener la explicación',
     },
     zh: {
       title: '词典',
@@ -86,6 +95,9 @@
       close: '关闭',
       translationFailed: '翻译失败',
       limitReached: '已达每日限额',
+      explain: '在上下文中解释',
+      explaining: '分析中…',
+      explainFailed: '无法获取解释',
     },
   };
   function dt(key) {
@@ -105,6 +117,7 @@
   let popup           = null;
   let dictPanel       = null;
   let selectedText    = '';
+  let selectedSentence = '';
   let popupAnchor     = { x: 0, y: 0 };
   let streamActive    = false;
   let streamOrigText  = '';
@@ -112,6 +125,7 @@
   let streamRenderTimer = null;
   let streamedText    = '';
   let pendingDelta    = '';
+  let explainRequestId = null;
 
   // ── Boot ────────────────────────────────────────────────────────────────────
   chrome.storage.local.get(['enabled', 'targetLanguage', 'interfaceLanguage', 'instantTranslate', 'useDictionary', 'accentTheme'], (result) => {
@@ -173,9 +187,55 @@
     return d.innerHTML;
   }
 
+  // Minimal safe markdown: **bold**, *italic*. HTML is escaped first.
+  function formatExplanation(text) {
+    let html = esc(text || '');
+    html = html.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/(^|[^*\w])\*([^*\n]+?)\*(?!\*)/g, '$1<em>$2</em>');
+    return html;
+  }
+
   function isOurNode(node) {
     return node && node.closest &&
       (node.closest('#ai-tr-btn') || node.closest('#ai-tr-popup') || node.closest('#ai-tr-dict'));
+  }
+
+  // Extract the full sentence containing the selection (bounded by .!?… or block edge)
+  function getSurroundingSentence(selection, word) {
+    try {
+      if (!selection || !selection.rangeCount) return word;
+      const range = selection.getRangeAt(0);
+
+      let container = range.startContainer;
+      if (container.nodeType === Node.TEXT_NODE) container = container.parentElement;
+      while (container && container !== document.body) {
+        const tag = container.tagName;
+        if (tag === 'P' || tag === 'LI' || tag === 'TD' || tag === 'BLOCKQUOTE' || tag === 'ARTICLE' || tag === 'SECTION') break;
+        const d = getComputedStyle(container).display;
+        if (d === 'block' || d === 'list-item' || d === 'table-cell') break;
+        container = container.parentElement;
+      }
+      if (!container) return word;
+
+      const fullText = (container.innerText || container.textContent || '').replace(/\s+/g, ' ').trim();
+      const idx = fullText.indexOf(word);
+      if (idx === -1) return word;
+
+      const terminators = /[.!?…。！？]/;
+      let start = idx;
+      let end = idx + word.length;
+      while (start > 0 && !terminators.test(fullText[start - 1]) && fullText[start - 1] !== '\n') start--;
+      while (end < fullText.length && !terminators.test(fullText[end])) end++;
+      if (end < fullText.length) end++;
+
+      const sentence = fullText.slice(start, end).trim();
+      // If the sentence is too short or equals the word, just return the word
+      if (sentence.length < word.length + 3) return word;
+      // Cap length so we don't send huge paragraphs if no punctuation found
+      return sentence.length > 600 ? sentence.slice(0, 600) : sentence;
+    } catch (_) {
+      return word;
+    }
   }
 
   // ── Translate button ─────────────────────────────────────────────────────────
@@ -222,6 +282,7 @@
 
       if (text.length >= 2 && text.length <= 5000) {
         selectedText = text;
+        selectedSentence = getSurroundingSentence(sel, text);
         // Pre-warm the background service worker so the next translate has no cold-start delay
         try { chrome.runtime.sendMessage({ type: 'ping' }); } catch (_) {}
         try {
@@ -406,6 +467,10 @@
     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
   </svg>`;
 
+  const LAMP_ICON = `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="currentColor"/>
+  </svg>`;
+
   function renderResult(original, translation) {
     const body = getBody();
     if (!body) return;
@@ -414,15 +479,18 @@
     const addBtnHTML = settings.useDictionary
       ? `<button class="ai-tr-add-btn" title="${esc(dt('addToDict'))}" data-orig="${esc(original)}" data-tr="${esc(translation)}">${ADD_ICON}</button>`
       : '';
+    const explainBtnHTML = `<button class="ai-tr-explain-btn" title="${esc(dt('explain'))}">${LAMP_ICON}</button>`;
 
     body.innerHTML = `
       <div class="ai-tr-row">
         <div class="ai-tr-result">${esc(translation)}</div>
+        ${explainBtnHTML}
         ${addBtnHTML}
         <button class="ai-tr-copy-btn" title="${esc(dt('copy'))}" data-copy="${esc(copyText)}">
           ${COPY_ICON}
         </button>
       </div>
+      <div class="ai-tr-explanation" id="ai-tr-explanation"></div>
     `;
 
     body.querySelector('.ai-tr-copy-btn').addEventListener('click', (e) => {
@@ -450,6 +518,43 @@
         }, 1800);
       });
     }
+
+    body.querySelector('.ai-tr-explain-btn').addEventListener('click', (e) => {
+      const btn = e.currentTarget;
+      const box = body.querySelector('#ai-tr-explanation');
+      if (!box) return;
+      // Toggle if already shown
+      if (box.classList.contains('visible')) {
+        box.classList.remove('visible');
+        btn.classList.remove('active');
+        return;
+      }
+      box.classList.add('visible');
+      btn.classList.add('active');
+      // If already has content — just show (cached render)
+      if (box.dataset.loaded === '1') return;
+      box.innerHTML = `<div class="ai-tr-explain-loading"><div class="ai-tr-spinner"></div><span>${esc(dt('explaining'))}</span></div>`;
+      const requestId = `exp:${Date.now()}:${Math.random().toString(36).slice(2, 8)}`;
+      explainRequestId = requestId;
+      chrome.runtime.sendMessage({
+        type: 'explain',
+        word: original,
+        sentence: selectedSentence || original,
+        interfaceLanguage: settings.interfaceLanguage,
+        requestId,
+      }, (response) => {
+        if (requestId !== explainRequestId) return;
+        if (!popup) return;
+        const latestBox = body.querySelector('#ai-tr-explanation');
+        if (!latestBox) return;
+        if (response && response.success) {
+          latestBox.innerHTML = formatExplanation(response.explanation);
+          latestBox.dataset.loaded = '1';
+        } else {
+          latestBox.innerHTML = `<div class="ai-tr-error">${esc((response && response.message) || dt('explainFailed'))}</div>`;
+        }
+      });
+    });
   }
 
   function renderError(message) {
