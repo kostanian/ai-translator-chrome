@@ -1,0 +1,8 @@
+# Personal developer notes — not for public repo
+dev_notes.md
+
+# macOS metadata
+.DS_Store
+
+# Build artefacts (CWS upload ZIP is rebuilt on demand)
+*.zip
