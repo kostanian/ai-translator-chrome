@@ -19,6 +19,13 @@ const I18N = {
     dictionary:    'Использовать словарь',
     openDict:      'Открыть',
     colorTheme:    'Тема оформления',
+    activeModel:   'Активная модель:',
+    noKey:         'ключ не задан',
+    aboutTitle:    'О приложении',
+    aboutDescr:    'AI Translator — переводит выделенный текст через ИИ и объясняет грамматику слова в контексте предложения. Работает через ваши собственные API-ключи OpenAI, Claude, Grok или Gemini.',
+    aboutContact:  'Контакты:',
+    aboutWebsite:  'Сайт:',
+    aboutNote:     'Публичная версия в Chrome Web Store находится в разработке. Сейчас устанавливается вручную через режим разработчика.',
   },
   en: {
     enabled:       'Enabled',
@@ -37,6 +44,13 @@ const I18N = {
     dictionary:    'Use dictionary',
     openDict:      'Open',
     colorTheme:    'Color theme',
+    activeModel:   'Active model:',
+    noKey:         'no key set',
+    aboutTitle:    'About',
+    aboutDescr:    'AI Translator translates selected text with AI and explains word grammar in the sentence context. Powered by your own OpenAI, Claude, Grok or Gemini API keys.',
+    aboutContact:  'Contact:',
+    aboutWebsite:  'Website:',
+    aboutNote:     'The public Chrome Web Store release is in development. For now, install manually via developer mode.',
   },
   es: {
     enabled:       'Activado',
@@ -55,6 +69,13 @@ const I18N = {
     dictionary:    'Usar diccionario',
     openDict:      'Abrir',
     colorTheme:    'Tema de color',
+    activeModel:   'Modelo activo:',
+    noKey:         'sin clave',
+    aboutTitle:    'Acerca de',
+    aboutDescr:    'AI Translator traduce el texto seleccionado con IA y explica la gramática de la palabra en el contexto de la frase. Funciona con tus propias claves API de OpenAI, Claude, Grok o Gemini.',
+    aboutContact:  'Contacto:',
+    aboutWebsite:  'Sitio web:',
+    aboutNote:     'La versión pública en la Chrome Web Store está en desarrollo. Por ahora se instala manualmente en modo desarrollador.',
   },
   zh: {
     enabled:       '已启用',
@@ -73,6 +94,13 @@ const I18N = {
     dictionary:    '使用词典',
     openDict:      '打开',
     colorTheme:    '颜色主题',
+    activeModel:   '当前模型：',
+    noKey:         '未设置密钥',
+    aboutTitle:    '关于',
+    aboutDescr:    'AI Translator 使用 AI 翻译选中的文本，并在句子语境中解释单词的语法。使用您自己的 OpenAI、Claude、Grok 或 Gemini API 密钥。',
+    aboutContact:  '联系：',
+    aboutWebsite:  '网站：',
+    aboutNote:     'Chrome Web Store 的公开版本正在开发中。目前通过开发者模式手动安装。',
   },
 };
 
@@ -302,6 +330,16 @@ const elBtnDictOpen     = $('btn-dict-open');
 const elDictHotkeyHint  = $('dict-hotkey-hint');
 const elLblHelpTitle    = $('lbl-help-title');
 const elHelpBody        = $('help-body');
+const elActiveModelLabel = $('active-model-label');
+const elActiveModelName  = $('active-model-name');
+const elBtnAbout        = $('btn-about');
+const elAboutModal      = $('about-modal');
+const elAboutBackdrop   = $('about-modal-backdrop');
+const elAboutClose      = $('about-close');
+const elAboutDescr      = $('about-description');
+const elAboutContactLbl = $('about-contact-label');
+const elAboutWebsiteLbl = $('about-website-label');
+const elAboutNote       = $('about-note');
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 chrome.storage.local.get(
@@ -349,6 +387,34 @@ function renderAll() {
   renderProviderTabs();
   renderModelSelector();
   renderApiKeySection();
+  renderActiveModelBar();
+  renderAboutModal();
+}
+
+function renderActiveModelBar() {
+  const provider = state.apiProvider;
+  const providerLabel = PROVIDER_LABELS[provider] || provider;
+  const modelId = (state.selectedModels || {})[provider] || DEFAULT_SELECTED_MODELS[provider];
+  const modelEntry = (PROVIDER_MODELS[provider] || []).find(m => m.id === modelId);
+  const modelLabel = modelEntry ? modelEntry.label : modelId;
+  const hasKey = !!((state.apiKeys[provider] || '').trim());
+  elActiveModelLabel.textContent = t('activeModel');
+  elActiveModelName.textContent  = hasKey
+    ? `${providerLabel} · ${modelLabel}`
+    : `${providerLabel} · ${modelLabel} (${t('noKey')})`;
+  // Tint the status dot: green if key ok, amber if missing
+  const dot = document.querySelector('.active-model-dot');
+  if (dot) {
+    dot.style.background = hasKey ? '#10b981' : '#f59e0b';
+    dot.style.boxShadow  = `0 0 0 3px ${hasKey ? 'rgba(16,185,129,0.2)' : 'rgba(245,158,11,0.22)'}`;
+  }
+}
+
+function renderAboutModal() {
+  elAboutDescr.textContent      = t('aboutDescr');
+  elAboutContactLbl.textContent = t('aboutContact');
+  elAboutWebsiteLbl.textContent = t('aboutWebsite');
+  elAboutNote.textContent       = t('aboutNote');
 }
 
 function renderToggle() {
@@ -466,6 +532,7 @@ function renderModelSelector() {
       state.selectedModels[state.apiProvider] = m.id;
       chrome.storage.local.set({ selectedModels: state.selectedModels });
       renderModelSelector();
+      renderActiveModelBar();
     });
     container.appendChild(btn);
   });
@@ -495,6 +562,7 @@ function renderApiKeySection() {
 
   // Show summary of all saved keys across providers
   renderKeysSummary();
+  renderActiveModelBar();
   clearValidateStatus();
 }
 
@@ -678,4 +746,19 @@ elBtnDictOpen.addEventListener('click', (e) => {
   e.preventDefault();
   e.stopPropagation();
   sendToActiveTab({ type: 'toggleDictionary' });
+});
+
+// ── About modal ───────────────────────────────────────────────────────────────
+function openAbout() {
+  renderAboutModal();
+  elAboutModal.style.display = 'block';
+}
+function closeAbout() {
+  elAboutModal.style.display = 'none';
+}
+elBtnAbout.addEventListener('click', (e) => { e.preventDefault(); openAbout(); });
+elAboutClose.addEventListener('click', closeAbout);
+elAboutBackdrop.addEventListener('click', closeAbout);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && elAboutModal.style.display === 'block') closeAbout();
 });

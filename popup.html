@@ -22,8 +22,41 @@
     <button class="flag-btn"        data-lang="en" title="English">🇬🇧</button>
     <button class="flag-btn"        data-lang="es" title="Español">🇪🇸</button>
     <button class="flag-btn"        data-lang="zh" title="中文">🇨🇳</button>
+    <button class="about-btn" id="btn-about" title="About" aria-label="About">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M11 7h2v2h-2V7zm0 4h2v6h-2v-6zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/></svg>
+    </button>
   </div>
 </header>
+
+<!-- ── Active model badge ────────────────────────────────────────────── -->
+<div class="active-model-bar" id="active-model-bar">
+  <span class="active-model-dot"></span>
+  <span class="active-model-label" id="active-model-label">Active:</span>
+  <strong id="active-model-name"></strong>
+</div>
+
+<!-- ── About modal (hidden until opened) ─────────────────────────────── -->
+<div class="about-modal" id="about-modal" style="display:none">
+  <div class="about-modal-backdrop" id="about-modal-backdrop"></div>
+  <div class="about-modal-card">
+    <button class="about-close" id="about-close" aria-label="Close">✕</button>
+    <div class="about-icon">
+      <img src="icons/icon48.png" alt="AI Translator" width="48" height="48">
+    </div>
+    <h3 class="about-title">AI Translator</h3>
+    <p class="about-version" id="about-version">v1.0.0</p>
+    <p class="about-description" id="about-description"></p>
+    <div class="about-row">
+      <span class="about-row-label" id="about-contact-label">Contact:</span>
+      <a href="mailto:kostanian.ag@gmail.com" class="about-link">kostanian.ag@gmail.com</a>
+    </div>
+    <div class="about-row">
+      <span class="about-row-label" id="about-website-label">Website:</span>
+      <a href="https://kostanian.github.io/ai-translator-website" target="_blank" rel="noopener" class="about-link">kostanian.github.io/ai-translator-website</a>
+    </div>
+    <p class="about-note" id="about-note"></p>
+  </div>
+</div>
 
 <!-- ── Target language (dropdown) ──────────────────────────────────────── -->
 <section class="section">
