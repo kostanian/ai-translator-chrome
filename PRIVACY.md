@@ -1,14 +1,14 @@
-# Privacy Policy — AI Translator
+# Privacy Policy — Selection TranslateAI
 
 **Last updated:** April 23, 2026
 
-> **In short:** AI Translator does not collect or transmit your data. Your API keys stay locally in your browser. Text you translate goes directly to the AI provider you chose.
+> **In short:** Selection TranslateAI does not collect or transmit your data. Your API keys stay locally in your browser. Text you translate goes directly to the AI provider you chose.
 
 ---
 
 ## 1. Who we are
 
-AI Translator is a Chrome extension that translates selected text and explains word grammar in sentence context via AI providers (OpenAI, Anthropic, xAI or Google) of your choice, using your own key. The extension is developed as an open-source project.
+Selection TranslateAI is a Chrome extension that translates selected text and explains word grammar in sentence context via AI providers (OpenAI, Anthropic, xAI or Google) of your choice, using your own key. The extension is developed as an open-source project.
 
 ## 2. What we DO NOT do
 

@@ -4,13 +4,13 @@
 
 <a id="english"></a>
 
-# AI Translator — Chrome Extension
+# Selection TranslateAI — Chrome Extension
 
 **Translate any selected text on any webpage using AI — and understand *why* a word is used in that exact form.**
 Pick your provider, bring your own API key, and get instant translations + in-context grammar explanations powered by OpenAI, Claude, Grok, or Gemini.
 
 <p align="center">
-  <img src="screenshot.png" alt="AI Translator screenshot" width="350">
+  <img src="screenshot.png" alt="Selection TranslateAI screenshot" width="350">
 </p>
 
 ## Features
@@ -110,7 +110,7 @@ MIT
 
 <a id="русский"></a>
 
-# AI Translator — Расширение для Chrome
+# Selection TranslateAI — Расширение для Chrome
 
 > [![English](https://img.shields.io/badge/English-blue?style=flat-square)](#english) &ensp; [![Русский](https://img.shields.io/badge/Русский-red?style=flat-square)](#русский)
 
@@ -118,7 +118,7 @@ MIT
 Выберите провайдера, введите свой API-ключ и получайте мгновенные переводы + объяснения грамматики в контексте от OpenAI, Claude, Grok или Gemini.
 
 <p align="center">
-  <img src="screenshot.png" alt="AI Translator — скриншот" width="350">
+  <img src="screenshot.png" alt="Selection TranslateAI — скриншот" width="350">
 </p>
 
 ## Возможности

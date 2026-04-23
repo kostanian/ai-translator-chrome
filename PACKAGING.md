@@ -16,6 +16,7 @@ Only the files the extension needs at runtime. Exclude docs, screenshots used fo
 
 **Exclude:**
 - `README.md`, `PRIVACY.md`, `STORE_LISTING.md`, `PACKAGING.md`
+- `dev_notes.md` (private, gitignored)
 - `screenshot.png` and `icons/select_*.png` (README/walkthrough screenshots — not used by the extension)
 - `.git/`, `.DS_Store`, any editor/IDE config
 
@@ -24,8 +25,8 @@ Only the files the extension needs at runtime. Exclude docs, screenshots used fo
 Run from the project root:
 
 ```sh
-rm -f ai-translator-chrome-v1.0.0.zip
-zip -r ai-translator-chrome-v1.0.0.zip \
+rm -f selection-translateai-v1.0.0.zip
+zip -r selection-translateai-v1.0.0.zip \
   manifest.json \
   background.js \
   content.js \
@@ -44,7 +45,7 @@ zip -r ai-translator-chrome-v1.0.0.zip \
 Verify the archive:
 
 ```sh
-unzip -l ai-translator-chrome-v1.0.0.zip
+unzip -l selection-translateai-v1.0.0.zip
 ```
 
 There should be exactly 13 entries, nothing else.
@@ -62,7 +63,7 @@ Chrome Web Store requires visual assets that you upload in the dashboard (not pa
 ## Upload flow
 
 1. Go to the [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole).
-2. Click **Add new item** → upload `ai-translator-chrome-v1.0.0.zip`.
+2. Click **Add new item** → upload `selection-translateai-v1.0.0.zip`.
 3. Fill the listing form using the copy from `STORE_LISTING.md`.
 4. Upload the visual assets (screenshots + promo tiles).
 5. Paste the privacy policy URL and permission justifications from `STORE_LISTING.md`.
@@ -70,4 +71,4 @@ Chrome Web Store requires visual assets that you upload in the dashboard (not pa
 
 ## Versioning for updates
 
-After any change, bump `version` in `manifest.json` (e.g. `1.0.0` → `1.0.1`), rebuild the ZIP with a matching filename, and upload via **Package → Upload new package** in the dashboard.
+After any change, bump `version` in `manifest.json` (e.g. `1.0.0` → `1.0.1`), rebuild the ZIP with a matching filename (`selection-translateai-v1.0.1.zip`), and upload via **Package → Upload new package** in the dashboard.

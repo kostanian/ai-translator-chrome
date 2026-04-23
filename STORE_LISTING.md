@@ -7,7 +7,7 @@ All texts below are ready to paste into the Chrome Web Store developer dashboard
 ## Store name
 
 ```
-AI Translator — Selection & Context
+Selection TranslateAI
 ```
 
 ## Category
@@ -33,7 +33,7 @@ Translate selected text with OpenAI, Claude, Grok or Gemini. Get in-context gram
 ## Detailed description (EN)
 
 ```
-AI Translator turns any webpage into a language-learning surface. Select a word or a sentence and get an instant translation from your favourite AI model. Click the lamp and the extension will break down the exact grammatical form, show the phrase the word belongs to, and explain in plain language why that form was chosen — perfect for languages with conjugations and declensions.
+Selection TranslateAI turns any webpage into a language-learning surface. Select a word or a sentence and get an instant translation from your favourite AI model. Click the lamp and the extension will break down the exact grammatical form, show the phrase the word belongs to, and explain in plain language why that form was chosen — perfect for languages with conjugations and declensions.
 
 ▸ Four AI providers, one UI
 Bring your own API key for OpenAI (GPT-4o mini, GPT-4o), Anthropic Claude (Haiku, Sonnet), xAI Grok (Grok 3, Grok 4) or Google Gemini (Flash 2.0, Flash 2.5). Keys are stored locally and separately for each provider — switch any time without losing your setup.
@@ -55,6 +55,9 @@ Save words you want to remember with the “+” button. Open the dictionary sid
 
 ▸ Instant mode
 Prefer zero-click workflow? Enable instant translation and get results the moment you release the mouse.
+
+▸ Active-model indicator
+The popup shows which provider and model will handle your next request — at the top, with a live status dot (green when a key is set, amber when missing).
 
 ▸ 17 translation languages & 4 interface languages
 Translate to Arabic, Chinese, Czech, Dutch, English, French, German, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish or Ukrainian. Interface in Russian, English, Spanish or Chinese — switch with a flag click.
@@ -81,7 +84,7 @@ Requires an API key from the provider you pick — usually free tier or pay-as-y
 ## Detailed description (RU)
 
 ```
-AI Translator превращает любую веб-страницу в языковой тренажёр. Выделите слово или предложение — и получите мгновенный перевод от выбранной вами ИИ-модели. Нажмите на лампочку — расширение разберёт грамматическую форму, покажет словосочетание, в котором стоит слово, и понятным языком объяснит, почему выбрана именно эта форма. Незаменимо для языков со спряжениями и склонениями.
+Selection TranslateAI превращает любую веб-страницу в языковой тренажёр. Выделите слово или предложение — и получите мгновенный перевод от выбранной вами ИИ-модели. Нажмите на лампочку — расширение разберёт грамматическую форму, покажет словосочетание, в котором стоит слово, и понятным языком объяснит, почему выбрана именно эта форма. Незаменимо для языков со спряжениями и склонениями.
 
 ▸ Четыре провайдера ИИ, один интерфейс
 Используйте свои API-ключи от OpenAI (GPT-4o mini, GPT-4o), Anthropic Claude (Haiku, Sonnet), xAI Grok (Grok 3, Grok 4) или Google Gemini (Flash 2.0, Flash 2.5). Ключи хранятся локально и отдельно для каждого провайдера — переключайтесь свободно, не теряя настроек.
@@ -103,6 +106,9 @@ AI Translator превращает любую веб-страницу в язы�
 
 ▸ Мгновенный режим
 Нужен перевод без лишних кликов? Включите мгновенный режим — перевод запустится сразу при отпускании кнопки мыши.
+
+▸ Индикатор активной модели
+Вверху попапа видно, какой провайдер и модель выполнят ваш следующий запрос — с живым статус-индикатором (зелёный, когда ключ задан, янтарный, если нет).
 
 ▸ 17 языков перевода и 4 языка интерфейса
 Переводите на арабский, китайский, чешский, нидерландский, английский, французский, немецкий, итальянский, японский, корейский, польский, португальский, русский, испанский, шведский, турецкий или украинский. Интерфейс — русский, английский, испанский или китайский — переключается кликом по флагу.
@@ -129,7 +135,7 @@ Indigo, Blue, Teal, Rose, Amber, Slate — подберите под свой с
 ## Single Purpose statement (required by CWS)
 
 ```
-AI Translator is a translation utility. Its single purpose is to let the user translate text they select on webpages and, optionally, receive a grammar explanation of that selection — using the AI provider and API key the user configures.
+Selection TranslateAI is a translation utility. Its single purpose is to let the user translate text they select on webpages and, optionally, receive a grammar explanation of that selection — using the AI provider and API key the user configures.
 ```
 
 ---
@@ -183,5 +189,5 @@ https://github.com/kostanian/ai-translator-chrome/issues
 ## Homepage URL
 
 ```
-https://github.com/kostanian/ai-translator-chrome
+https://kostanian.github.io/ai-translator-website
 ```

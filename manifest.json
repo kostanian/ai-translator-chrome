@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "AI Translator — Selection & Context",
-  "short_name": "AI Translator",
+  "name": "Selection TranslateAI",
+  "short_name": "Selection TranslateAI",
   "version": "1.0.0",
   "description": "Translate selected text with OpenAI, Claude, Grok or Gemini. Get in-context grammar explanations and a personal dictionary.",
-  "homepage_url": "https://github.com/kostanian/ai-translator-chrome",
+  "homepage_url": "https://kostanian.github.io/ai-translator-website",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
@@ -31,7 +31,7 @@
         "default": "Alt+Shift+T",
         "mac":     "Alt+Shift+T"
       },
-      "description": "Toggle AI Translator on/off"
+      "description": "Toggle Selection TranslateAI on/off"
     }
   },
   "content_scripts": [
