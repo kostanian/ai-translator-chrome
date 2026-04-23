@@ -127,6 +127,7 @@ const PROVIDER_MODELS = {
   ],
   grok: [
     { id: 'grok-3', label: 'Grok 3', hint: 'fast' },
+    { id: 'grok-4', label: 'Grok 4', hint: 'powerful' },
   ],
   gemini: [
     { id: 'gemini-2.0-flash', label: 'Flash 2.0',  hint: 'fast' },

@@ -36,7 +36,7 @@ Translate selected text with OpenAI, Claude, Grok or Gemini. Get in-context gram
 AI Translator turns any webpage into a language-learning surface. Select a word or a sentence and get an instant translation from your favourite AI model. Click the lamp and the extension will break down the exact grammatical form, show the phrase the word belongs to, and explain in plain language why that form was chosen — perfect for languages with conjugations and declensions.
 
 ▸ Four AI providers, one UI
-Bring your own API key for OpenAI (GPT-4o mini, GPT-4o), Anthropic Claude (Haiku, Sonnet), xAI Grok (Grok 3) or Google Gemini (Flash 2.0, Flash 2.5). Keys are stored locally and separately for each provider — switch any time without losing your setup.
+Bring your own API key for OpenAI (GPT-4o mini, GPT-4o), Anthropic Claude (Haiku, Sonnet), xAI Grok (Grok 3, Grok 4) or Google Gemini (Flash 2.0, Flash 2.5). Keys are stored locally and separately for each provider — switch any time without losing your setup.
 
 ▸ Translation popup
 Highlight text → a translate button appears next to your selection. Click it to see the translation stream in real time. Copy, save to dictionary, or dive into the contextual explanation.
@@ -84,7 +84,7 @@ Requires an API key from the provider you pick — usually free tier or pay-as-y
 AI Translator превращает любую веб-страницу в языковой тренажёр. Выделите слово или предложение — и получите мгновенный перевод от выбранной вами ИИ-модели. Нажмите на лампочку — расширение разберёт грамматическую форму, покажет словосочетание, в котором стоит слово, и понятным языком объяснит, почему выбрана именно эта форма. Незаменимо для языков со спряжениями и склонениями.
 
 ▸ Четыре провайдера ИИ, один интерфейс
-Используйте свои API-ключи от OpenAI (GPT-4o mini, GPT-4o), Anthropic Claude (Haiku, Sonnet), xAI Grok (Grok 3) или Google Gemini (Flash 2.0, Flash 2.5). Ключи хранятся локально и отдельно для каждого провайдера — переключайтесь свободно, не теряя настроек.
+Используйте свои API-ключи от OpenAI (GPT-4o mini, GPT-4o), Anthropic Claude (Haiku, Sonnet), xAI Grok (Grok 3, Grok 4) или Google Gemini (Flash 2.0, Flash 2.5). Ключи хранятся локально и отдельно для каждого провайдера — переключайтесь свободно, не теряя настроек.
 
 ▸ Окно перевода
 Выделите текст → рядом появляется кнопка перевода. Нажмите — и перевод будет появляться пословно в реальном времени. Копируйте, сохраняйте в словарь или открывайте объяснение в контексте.
